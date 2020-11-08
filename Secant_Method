@@ -1,0 +1,64 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Nov  8 15:31:33 2020
+
+@author: Esyllt
+"""
+
+
+import matplotlib.pyplot as plt ### plotting things
+import numpy as np ## one of python's main maths packages
+import pandas as pd ## for reading in our data
+from scipy.optimize import curve_fit ## for fitting a line to our data
+import matplotlib.ticker as ticker ## this one lets us change some parameters in our plots.
+from IPython.display import display, Markdown
+plt.rcParams.update({'font.size':25})   # A decent font size so the text is readible. 
+
+import os
+os.getcwd()
+os.chdir(r'C:\Users\esw73\Documents\Year 2 Semester 1 Physics\Experimental\p9')
+
+data = pd.read_excel('mean_xlsx.xlsx', 
+                        names=('Mean', 'Uncert_Mean', 'Temp', 'Uncert_Temp'), 
+                        usecols=(0,1,2,3), 
+                        nrows=5)
+
+plt.plot(data.Mean, data.Temp)
+
+fig = plt.figure(figsize=(10,10))
+
+ax = fig.add_subplot(1,1,1)
+
+ax.errorbar(data.Mean,           
+             data.Temp,              
+             xerr=data.Uncert_Mean,
+             yerr=data.Uncert_Temp,     
+             marker='o',             
+             markersize = 8,        
+             color='black',          
+             linestyle='none',       
+             capsize=10,              
+             )
+
+ax.set_xlabel('Temperature / °C')
+ax.set_ylabel('Mean Free Path/ μm')
+
+
+plt.setp(ax.xaxis.get_majorticklabels()[0], ha='left')
+plt.setp(ax.xaxis.get_majorticklabels()[-1], ha='right')
+plt.setp(ax.yaxis.get_majorticklabels()[0], va='bottom')
+plt.setp(ax.yaxis.get_majorticklabels()[-1], va='top')
+
+
+ax.tick_params(direction='in',      # I like 'in', could be 'out' or both 'inout'
+                length=8,            # A reasonable length
+                top='on',
+                bottom='on',
+                left='on',
+                right='on'),
+plt.rcParams.update({'font.size':30})   # A decent font size so the text is readible. 
+                                        # You may have to play with the aspect ration aobe and this to get a nice 
+
+plt.show()
+
+fig.savefig('mean_temp.png', dpi=500) 
